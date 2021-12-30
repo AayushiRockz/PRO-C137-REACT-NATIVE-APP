@@ -6,20 +6,23 @@ export default class DetailsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      details: {},
-      url: `https://2ab3-183-87-245-244.ngrok.io/star?name=${this.props.navigation.getParam(
-        "name"
-      )}`
+ 
+      name: this.props.navigation.getParam("name"),
+      details: {}
     };
   }
 
   componentDidMount() {
-    this.getDetails();
+    const {name} = this.state 
+    this.getDetails(name);
   }
-  getDetails = () => {
-    const { url } = this.state;
+  getDetails = (name) => {
+    const  url  = `http://c409-183-87-245-228.ngrok.io/star?name=${name}`;
     axios
       .get(url)
+      .then(response=>{
+        this.setState({details:response.data.data})
+      })
       .catch(error => {
         Alert.alert(error.message);
       });
@@ -27,12 +30,12 @@ export default class DetailsScreen extends Component {
 
 
   render() {
-    const { details, imagePath } = this.state;
-    if (details.specifications) {
+    const { name,details } = this.state;
+    if (details) {
       return (
         <View style={styles.container}>
           <Card>
-            <Card.Title>{details.name}</Card.Title>
+            <Card.Title style={{fontSize:30, fontFamily:'serif', color:'blue'}}>{details.name}</Card.Title>
             
             <View>
               <Text
@@ -50,23 +53,6 @@ export default class DetailsScreen extends Component {
               <Text
                 style={styles.cardItem}
               >{`distance : ${details.distance}`}</Text>
-              <Text
-                style={styles.cardItem}
-              >{`Planet Mass : ${details.planet_mass}`}</Text>
-              <Text
-                style={styles.cardItem}
-              >{`Planet Radius : ${details.planet_radius}`}</Text>
-              <Text
-                style={styles.cardItem}
-              >{`Planet Type : ${details.planet_type}`}</Text>
-            </View>
-            <View style={[styles.cardItem, { flexDirection: "column" }]}>
-              <Text>{details.specifications ? `Specifications : ` : ""}</Text>
-              {details.specifications.map((item, index) => (
-                <Text key={index.toString()} style={{ marginLeft: 50 }}>
-                  {item}
-                </Text>
-              ))}
             </View>
             </Card>
         </View>
@@ -81,6 +67,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   cardItem: {
-    marginBottom: 10
+    marginBottom: 10,
+    fontSize:25,
+    fontFamily:'serif',
+    borderWidth:2,
+    borderColor:'cyan',
+    padding:5
   }
 });

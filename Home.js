@@ -9,7 +9,7 @@ export default class HomeScreen extends Component{
         super(props);
         this.state = {
             listData : [],
-            url : 'https://2ab3-183-87-245-244.ngrok.io' 
+            url : 'http://c409-183-87-245-228.ngrok.io' 
         }
     }
     componentDidMount() {
@@ -29,7 +29,7 @@ export default class HomeScreen extends Component{
     }
     renderItem = ({item, index}) => (
         <ListItem key = {index} bottomDivider 
-            onPress = {()=> this.props.navigation.navigate('Details', {star_name : item.name})} >
+            onPress = {()=> this.props.navigation.navigate('Details', {name : item.name})} >
             <ListItem.Content>
                 <ListItem.Title>{item.name}</ListItem.Title>
                 
